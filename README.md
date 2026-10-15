@@ -1,4 +1,4 @@
-# Týmové skilly pro PHP/Nette vývoj
+# Týmové skilly pro PHP/Nette a webový vývoj
 
 Sdílená sada workflow pravidel pro Codex a Claude Code. Každý skill je samostatný adresář s jediným obsahovým souborem `SKILL.md` ve formátu otevřeného standardu Agent Skills.
 
@@ -16,6 +16,8 @@ Instrukce skillů jsou anglicky kvůli přenositelnosti mezi různými agenty. T
 | `php-quality-gate` | Vyžaduje test změněného chování, testovací sadu, PHPStan a funkční ověření. |
 | `relational-database-design` | Řídí návrh schématu, migrace, indexy, transakce a bezpečnost dat. |
 | `php-84-runtime` | Udržuje minimální PHP 8.4 a kompatibilní novější verze PHP 8.x. |
+| `accessible-html5` | Vede tvorbu sémantického HTML5, přístupných formulářů a ovládání, správného použití ARIA a klávesové navigace. |
+| `responsive-css` | Vede responzivní, přístupné a udržitelné CSS bez `!important`, inline stylů a triků se specificitou. |
 
 ## Výchozí workflow
 
@@ -26,9 +28,11 @@ Pro běžný implementační úkol použijte `team-development-workflow`. Ten pr
 3. prohlídka synchronizovaného projektu a vyhodnocení rizik;
 4. kontrola PHP 8.4+ a `composer install` podle existujícího lock souboru;
 5. implementace v souladu s architekturou, databází a runtime politikou;
-6. nový nebo upravený test pro změněné chování;
-7. relevantní testy, celá povinná sada, PHPStan a funkční ověření;
-8. atomický commit a okamžitý push aktuální větve.
+6. u změn rozhraní sémantické HTML5, nativní prvky před ARIA a responzivní CSS bez `!important`;
+7. nový nebo upravený test pro změněné chování;
+8. relevantní testy, celá povinná sada, PHPStan a funkční ověření;
+9. u změn rozhraní kontrola vykresleného DOMu, klávesnice, focusu, stavů komponent, různých šířek, 200% zvětšení textu a reflow při 320 CSS px;
+10. atomický commit a okamžitý push aktuální větve.
 
 Samotné `composer update` se před každým úkolem nespouští. Aktualizace závislostí je samostatná práce s vlastním diffem, validací, testy, PHPStanem a commitem.
 
@@ -73,6 +77,8 @@ Agenti mohou skilly vybrat automaticky podle pole `description`. Koordinační s
 
 Pro samostatný úkol lze vyvolat přímo například `$project-risk-assessment` v Codexu nebo `/project-risk-assessment` v Claude Code.
 
+Při práci na šablonách nebo rozhraní lze samostatně vyvolat `$accessible-html5` a `$responsive-css` v Codexu, případně `/accessible-html5` a `/responsive-css` v Claude Code. HTML skill upřednostňuje nativní sémantiku před ARIA; CSS skill zakazuje přidávání `!important` i obdobné obcházení kaskády pomocí inline stylů, ID selektorů nebo uměle navýšené specificity.
+
 Automatický commit a push platí pro implementační práci, kterou má agent oprávnění provést. Skilly nedávají oprávnění zahodit cizí změny, přepsat historii, obejít ochranu větve, pracovat s produkčními daty nebo rozšířit zadání. Read-only analýza, plán či review se necommitují.
 
 ## Údržba
@@ -82,7 +88,7 @@ Automatický commit a push platí pro implementační práci, kterou má agent o
 - Pole `name` musí odpovídat názvu adresáře a zůstat unikátní.
 - Pole `description` musí jasně říkat, kdy se má skill použít a kdy nikoliv.
 - Nevkládejte do skillů projektová hesla, tokeny, interní produkční adresy ani jiné tajné údaje.
-- Před vydáním nové verze ověřte YAML frontmatter všech skillů a otestujte alespoň modelový implementační, databázový a dependency scénář.
+- Před vydáním nové verze ověřte YAML frontmatter všech skillů a otestujte alespoň modelový implementační, databázový, dependency a frontendový scénář.
 
 ## Primární dokumentace
 
@@ -91,4 +97,7 @@ Automatický commit a push platí pro implementační práci, kterou má agent o
 - [Nette: adresářová struktura aplikace](https://doc.nette.org/cs/application/directory-structure)
 - [Composer: základní použití install a update](https://getcomposer.org/doc/01-basic-usage.md)
 - [PHPStan: Getting Started](https://phpstan.org/user-guide/getting-started)
-
+- [MDN: HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
+- [W3C: WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
+- [W3C: Web Content Accessibility Guidelines](https://www.w3.org/WAI/standards-guidelines/wcag/)
+- [MDN: CSS responsive design](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design)

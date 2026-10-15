@@ -1,6 +1,6 @@
 ---
 name: team-development-workflow
-description: Coordinate an implementation task in a PHP/Nette repository from initial synchronization and risk review through dependency setup, testing, PHPStan, commit, and push. Use for code changes, bug fixes, refactors, database migrations, and dependency work; do not use for read-only review or planning.
+description: Coordinate an implementation task in a PHP/Nette web repository from initial synchronization and risk review through dependency setup, implementation, verification, commit, and push. Use for code changes, UI work, bug fixes, refactors, database migrations, and dependency work; do not use for read-only review or planning.
 ---
 
 # Team Development Workflow
@@ -16,6 +16,8 @@ Companion skills provide deeper guidance when installed:
 - `php-quality-gate`
 - `relational-database-design`
 - `php-84-runtime`
+- `accessible-html5`
+- `responsive-css`
 
 Do not assume that naming a companion skill grants extra permissions. Preserve user work, repository policy, protected branches, and environment approval requirements.
 
@@ -37,6 +39,8 @@ Keep the risk report concise. Continue without waiting when risks are understood
 - Make the smallest coherent change that solves the task.
 - Follow the repository's existing architecture. Apply the Nette structure guidance strongly to new modules and projects, but do not reorganize an established codebase without scope to do so.
 - Keep domain rules out of presenters, templates, and persistence plumbing.
+- For rendered interfaces, use semantic HTML5 and native controls first. Add ARIA only for semantics, relationships, or state that native HTML cannot express, and implement the corresponding keyboard and focus behavior.
+- Keep layouts responsive to available space, zoom, content length, and user preferences. Follow the existing design system and resolve cascade conflicts without `!important`, inline styling, or specificity hacks.
 - For schema changes, use versioned migrations and plan compatibility with both the old and new application version when deployments can overlap.
 - Treat dependency updates as separate logical work. Prefer targeted updates and keep resulting lock-file changes in a dedicated commit.
 - Add or update a test for changed behavior. A bug fix should normally include a regression test that fails without the fix.
@@ -49,7 +53,8 @@ Before each commit:
 2. Run syntax or formatting checks required by the repository.
 3. Run the most focused relevant test while iterating.
 4. Run the repository's required test suite and PHPStan command before delivery.
-5. Exercise the affected behavior directly when tests alone do not demonstrate that it works.
+5. For UI changes, inspect the rendered result at relevant viewport widths, 200% text zoom, and 320 CSS pixels wide, then verify keyboard operation, focus, semantics, and important component states.
+6. Exercise the affected behavior directly when tests alone do not demonstrate that it works.
 
 Do not weaken tests, lower PHPStan strictness, regenerate a baseline, or add broad ignores merely to make the gate pass. Documentation-only or metadata-only changes do not require artificial tests, but still require the relevant validation and an explicit explanation of why no behavioral test was added.
 
@@ -64,4 +69,3 @@ After the logical unit passes its quality gate:
 5. Report the commit identifier, pushed branch, and verification commands.
 
 If verification fails, do not commit or push the change. Fix failures within scope; otherwise report the blocker and preserve the working tree for the user.
-
